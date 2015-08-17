@@ -1,6 +1,5 @@
 require 'bundler'
 Bundler.require
-require 'optparse'
 require_relative 'models/image'
 require_relative 'api-config'
 

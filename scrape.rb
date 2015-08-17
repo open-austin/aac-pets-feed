@@ -1,6 +1,5 @@
 require 'bundler'
 Bundler.require
-require 'optparse'
 require 'time'
 require 'json'
 require_relative 'models/image'
