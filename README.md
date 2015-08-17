@@ -5,16 +5,18 @@ Socrata data portal from [Austin Animal Center](https://data.austintexas.gov/Gov
 
 ### Install
 
-`git clone git@github.com:tshelburne/aac-pets-feed.git`
-`bundle install --path=vendor`
+  git clone git@github.com:tshelburne/aac-pets-feed.git
+  bundle install --path=vendor
 
 ### Usage
 
-To post to localhost:3000
+Copy _api-config.rb.EXAMPLE_ to _api-config.rb_
 
-`ruby scrape.rb --env development`
+The distributed configuration is appropriate for posting to localhost:3000 -- i.e. a local development instance of the Pet Alerts app.
 
-To post to http://pet-alert.heroku.com/
+For production use, adjust settings of the _api-config.rb_ file.
 
-`ruby scrape.rb` - note that this will require ENV variables `http_username` and `http_password` 
-to be set, matching authentication on the Heroku server.
+Run with:
+
+  ruby scrape.rb
+

@@ -4,16 +4,9 @@ require 'optparse'
 require 'time'
 require 'json'
 require_relative 'models/image'
+require_relative 'api-config'
 
-options = {}
-OptionParser.new do |opts|
-	opts.on('-e', '--env ENV', 'Environment') do |env|
-		options[:env] = env
-	end
-end.parse!
-
-domain, username, password = options[:env] == 'development' ? [ 'localhost:3000', 'username', 'password' ] : [ 'pet-alert.herokuapp.com', ENV['http_username'], ENV['http_password'] ]
-pa_client = HTTP.auth(:basic, user: username, pass: password)
+pa_client = HTTP.auth(:basic, user: API[:USERNAME], pass: API[:PASSWORD])
 
 client = SODA::Client.new domain: 'data.austintexas.gov'
 results = client.get 'hjeh-idye', {'$limit'=>50000}
@@ -38,7 +31,7 @@ def result_to_hash(result)
 end
 
 puts 'Getting pet ids from Pet Alerts...'
-pets_in_database = JSON.parse pa_client.get("http://#{domain}/pets/external-ids").body
+pets_in_database = JSON.parse pa_client.get("#{API[:BASEURL]}/pets/external-ids").body
 
 puts 'Limiting push set...'
 unscraped_results = results.select {|result| !pets_in_database.include? result.animal_id }
@@ -50,7 +43,7 @@ result_hashes = unscraped_results.each_with_index.reduce({}) do |hashes, (result
 end
 
 puts "Posting #{result_hashes.count} pets to Pet Alerts..."
-res = pa_client.post "http://#{domain}/populator/update", json: { pets: result_hashes }
+res = pa_client.post "#{API[:BASEURL]}/populator/update", json: { pets: result_hashes }
 
 puts res.code != 200 ? res.body : 'Everything looks good...'
 

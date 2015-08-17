@@ -1,0 +1,6 @@
+# This file should be copied to api-config.rb and adjusted as needed.
+API = {
+	:USERNAME => "username",
+	:PASSWORD => "password",
+	:BASEURL => "http://localhost:3000",
+}
